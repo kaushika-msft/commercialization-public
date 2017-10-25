@@ -94,7 +94,41 @@ You can change the default application association settings in a WIM or VHD file
     Dism.exe /Image:C:\test\offline /Remove-DefaultAppAssociations
     ```
 
- 
+ ## <span id="Customize File Association when upgrading"></span><span id="Customize File Association when upgrading"></span><span id="Customize File Association when upgrading"></span>Customize File Association when upgrading
+
+Customize file association during ongoing upgrade and apply the changes to an existing users:
+
+1. Copy the %WINDIR%\System32\OEMDefaultAssociations.xml from target Windows 10 as a base file association .xml.
+2. Set new application defaults for the extensions and capture the changes by export the AppAssoc.xml file out:
+```
+Dism /Online /Export-DefaultAppAssociations:\\Server\Share\AppAssoc.xml
+```
+Make sure the file association changes in the exported AppAssoc.xml.
+
+3. For each line items you modify in AppAssoc.xml, manually modify the association in OEMDefaultAssociations.xml
+ 
+> Note: Keep sections ApplyOnUpgrade="true" & OverwriteIfProgIdIs="OrigProgID" after "ApplicationName" where OrigProgID is the original ProgID in OEMDefaultAssociations.xml. Do not modify items that don’t have any customization in OEMDefaultAssociations.xml.
+
+**Example: To associate .pdf to Adobe Reader**
+
+This is the line items customized in AppAssoc.xml:
+
+```
+<Association Identifier=".pdf" ProgId="AcroExch.Document.DC" ApplicationName="Adobe Acrobat Reader DC" />
+```
+
+This is the line items customized in OEMDefaultAssociations.xml:
+
+| Original OEMDefaultAssociations.xml        | Modified OEMDefaultAssociations_New.xml           |
+| ------------- |:-------------:| 
+|```<Association Identifier=".pdf" ProgId="AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723" ApplicationName="Microsoft Edge" ApplyOnUpgrade="true" OverwriteIfProgIdIs="AppXk660crfh0gw7gd9swc1nws708mn7qjr1" />```     | ```<Association Identifier=".pdf" ProgId="AcroExch.Document.DC" ApplicationName="Adobe Acrobat Reader DC" ApplyOnUpgrade="true" OverwriteIfProgIdIs="AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723" />``` | 
+
+
+4. Import the default application association settings into the offline image or while task sequence:
+```
+Dism.exe /Image:C:\test\offline /Import-DefaultAppAssociations:\\Server\Share\OEMDefaultAssociations_New.xml
+```
+
 
  
 
