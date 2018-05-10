@@ -116,7 +116,7 @@ To use the Preview pane in File Explorer, choose the **View** menu group, and th
 
 ### <span id="Server_support"></span><span id="server_support"></span><span id="SERVER_SUPPORT"></span>Server support
 
-|**HLK version**|**Applicable Server OS version**|
+|**HLK version**|**Compatable server OS versions**|
 |--- |--- |
 |1803|Windows Server 2012, Windows Server 2012 R2, Windows Server 2016|
 |1709|Windows Server 2012, Windows Server 2012 R2, Windows Server 2016|
